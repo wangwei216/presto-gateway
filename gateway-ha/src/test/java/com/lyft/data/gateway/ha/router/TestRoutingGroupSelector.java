@@ -35,7 +35,7 @@ public class TestRoutingGroupSelector {
     String rulesDir = "src/test/resources/rules/";
 
     return new Object[][] {
-      { rulesDir + "routing_rules_atomic.yml" },
+      { rulesDir + "routing_rules.yml" },
       { rulesDir + "routing_rules_composite.yml" },
       { rulesDir + "routing_rules_priorities.yml" },
       { rulesDir + "routing_rules_if_statements.yml" }

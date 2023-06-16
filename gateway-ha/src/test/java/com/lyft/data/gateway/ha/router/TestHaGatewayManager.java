@@ -1,6 +1,7 @@
 package com.lyft.data.gateway.ha.router;
 
 import com.lyft.data.gateway.ha.HaGatewayTestUtils;
+import com.lyft.data.gateway.ha.config.ClusterDispatchDataStoreConfiguration;
 import com.lyft.data.gateway.ha.config.DataStoreConfiguration;
 import com.lyft.data.gateway.ha.config.ProxyBackendConfiguration;
 import com.lyft.data.gateway.ha.persistence.JdbcConnectionManager;
@@ -25,7 +26,8 @@ public class TestHaGatewayManager {
     HaGatewayTestUtils.seedRequiredData(
         new HaGatewayTestUtils.TestConfig("", tempH2DbDir.getAbsolutePath()));
     DataStoreConfiguration db = new DataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
-    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db);
+    ClusterDispatchDataStoreConfiguration db2 = new ClusterDispatchDataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
+    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db, db2);
     haGatewayManager = new HaGatewayManager(connectionManager);
   }
 

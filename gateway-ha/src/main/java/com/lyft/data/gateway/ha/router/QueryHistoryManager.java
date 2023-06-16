@@ -20,6 +20,7 @@ public interface QueryHistoryManager {
     private String user;
     private String source;
     private String backendUrl;
+    private String appId;
     private long captureTime;
 
     @Override

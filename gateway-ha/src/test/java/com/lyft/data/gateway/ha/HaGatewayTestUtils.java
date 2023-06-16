@@ -2,6 +2,7 @@ package com.lyft.data.gateway.ha;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.lyft.data.gateway.ha.config.ClusterDispatchDataStoreConfiguration;
 import com.lyft.data.gateway.ha.config.DataStoreConfiguration;
 import com.lyft.data.gateway.ha.persistence.JdbcConnectionManager;
 import java.io.File;
@@ -39,7 +40,8 @@ public class HaGatewayTestUtils {
   public static void seedRequiredData(TestConfig testConfig) {
     String jdbcUrl = "jdbc:h2:" + testConfig.getH2DbFilePath();
     DataStoreConfiguration db = new DataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
-    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db);
+    ClusterDispatchDataStoreConfiguration db2 = new ClusterDispatchDataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
+    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db, db2);
     connectionManager.open();
     Base.exec(HaGatewayTestUtils.getResourceFileContent("gateway-ha-persistence.sql"));
     connectionManager.close();

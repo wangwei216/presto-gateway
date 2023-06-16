@@ -3,14 +3,20 @@ routingRules:
   # rulesConfigPath: "src/main/resources/rules/routing_rules.yml"
 
 requestRouter:
-  port: 8080
+  port: 8888
   name: prestoRouter
   historySize: 1000
 
 dataStore:
   jdbcUrl: jdbc:mysql://127.0.0.1:3306/prestogateway
   user: root
-  password: root123
+  password: root
+  driver: com.mysql.cj.jdbc.Driver
+
+clusterDispatchDataStore:
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/tyrantdb_api
+  user: root
+  password: root
   driver: com.mysql.cj.jdbc.Driver
 
 server:
@@ -45,15 +51,15 @@ logging:
   # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
   level: INFO
 
-  # Logger-specific levels.
-  loggers:
-    com.lyft: DEBUG
+#   Logger-specific levels.
+#  loggers:
+#    com.lyft: DEBUG
 
   appenders:
     - type: console
     - type: file
-      currentLogFilename: /var/log/prestoproxy/prestoproxy-java.log
-      archivedLogFilenamePattern: /var/log/prestoproxy/prestoproxy-java-%d{yyyy-MM-dd}-%i.log.gz
+      currentLogFilename: /Users/wangwei/Desktop/Test/prestoproxy/prestoproxy-java.log
+      archivedLogFilenamePattern: /Users/wangwei/Desktop/Test/prestoproxy-java-%d{yyyy-MM-dd}-%i.log.gz
       archivedFileCount: 7
       timeZone: UTC
       maxFileSize: 100MB

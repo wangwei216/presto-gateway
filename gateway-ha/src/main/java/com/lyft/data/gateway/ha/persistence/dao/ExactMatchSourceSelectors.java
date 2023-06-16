@@ -8,11 +8,13 @@ import java.util.List;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Cached;
 import org.javalite.activejdbc.annotations.CompositePK;
+import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.Table;
 
 @CompositePK({"environment", "source", "query_type"})
 @Table("exact_match_source_selectors") // located in gateway-ha-persistence.sql
 @Cached
+@DbName("default")
 public class ExactMatchSourceSelectors extends Model {
   private static final String resourceGroupId = "resource_group_id";
   private static final String updateTime = "update_time";

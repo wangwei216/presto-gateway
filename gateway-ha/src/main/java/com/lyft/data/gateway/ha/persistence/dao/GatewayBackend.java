@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Cached;
+import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.IdName;
 import org.javalite.activejdbc.annotations.Table;
 
@@ -13,6 +14,7 @@ import org.javalite.activejdbc.annotations.Table;
 @Table("gateway_backend")
 @IdName("name")
 @Cached
+@DbName("default")
 public class GatewayBackend extends Model {
   private static final String name = "name";
   private static final String routingGroup = "routing_group";

@@ -7,18 +7,21 @@ import java.util.List;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Cached;
+import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.IdName;
 import org.javalite.activejdbc.annotations.Table;
 
 @IdName("query_id")
 @Table("query_history")
 @Cached
+@DbName("default")
 public class QueryHistory extends Model {
   private static final String queryId = "query_id";
   private static final String queryText = "query_text";
   private static final String backendUrl = "backend_url";
   private static final String userName = "user_name";
   private static final String source = "source";
+  private static final String appId = "app_id";
   private static final String created = "created";
 
   public static List<QueryDetail> upcast(List<QueryHistory> queryHistoryList) {
@@ -31,6 +34,7 @@ public class QueryHistory extends Model {
       queryDetail.setBackendUrl(dao.getString(backendUrl));
       queryDetail.setUser(dao.getString(userName));
       queryDetail.setSource(dao.getString(source));
+      queryDetail.setAppId(dao.getString(appId));
       queryDetails.add(queryDetail);
     }
     return queryDetails;
@@ -42,6 +46,7 @@ public class QueryHistory extends Model {
     model.set(backendUrl, queryDetail.getBackendUrl());
     model.set(userName, queryDetail.getUser());
     model.set(source, queryDetail.getSource());
+    model.set(appId, queryDetail.getAppId());
     model.set(created, queryDetail.getCaptureTime());
     model.insert();
   }

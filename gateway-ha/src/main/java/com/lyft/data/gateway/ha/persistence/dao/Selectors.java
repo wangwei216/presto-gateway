@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.BelongsTo;
-import org.javalite.activejdbc.annotations.Cached;
-import org.javalite.activejdbc.annotations.IdName;
-import org.javalite.activejdbc.annotations.Table;
+import org.javalite.activejdbc.annotations.*;
 
 @BelongsTo(parent = ResourceGroups.class, foreignKeyName = "resource_group_id")
 @IdName("resource_group_id")
 @Table("selectors") // located in gateway-ha-persistence.sql
 @Cached
+@DbName("default")
 public class Selectors extends Model {
   private static final String resourceGroupId = "resource_group_id";
   private static final String priority = "priority";

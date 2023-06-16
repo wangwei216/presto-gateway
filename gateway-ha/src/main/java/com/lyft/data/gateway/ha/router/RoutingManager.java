@@ -83,6 +83,7 @@ public abstract class RoutingManager {
       return provideAdhocBackend();
     }
     int backendId = Math.abs(RANDOM.nextInt()) % backends.size();
+    log.debug("RoutingGroup backend_name is [{}], backend_url is [{}], proxy url is [{}]", backends.get(backendId).getName(), backends.get(backendId).getRoutingGroup(), backends.get(backendId).getProxyTo());
     return backends.get(backendId).getProxyTo();
   }
 

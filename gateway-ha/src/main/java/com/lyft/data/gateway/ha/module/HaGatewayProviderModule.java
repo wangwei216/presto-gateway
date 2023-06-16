@@ -9,15 +9,7 @@ import com.lyft.data.gateway.ha.config.RequestRouterConfiguration;
 import com.lyft.data.gateway.ha.config.RoutingRulesConfiguration;
 import com.lyft.data.gateway.ha.handler.QueryIdCachingProxyHandler;
 import com.lyft.data.gateway.ha.persistence.JdbcConnectionManager;
-import com.lyft.data.gateway.ha.router.GatewayBackendManager;
-import com.lyft.data.gateway.ha.router.HaGatewayManager;
-import com.lyft.data.gateway.ha.router.HaQueryHistoryManager;
-import com.lyft.data.gateway.ha.router.HaResourceGroupsManager;
-import com.lyft.data.gateway.ha.router.HaRoutingManager;
-import com.lyft.data.gateway.ha.router.QueryHistoryManager;
-import com.lyft.data.gateway.ha.router.ResourceGroupsManager;
-import com.lyft.data.gateway.ha.router.RoutingGroupSelector;
-import com.lyft.data.gateway.ha.router.RoutingManager;
+import com.lyft.data.gateway.ha.router.*;
 import com.lyft.data.proxyserver.ProxyHandler;
 import com.lyft.data.proxyserver.ProxyServer;
 import com.lyft.data.proxyserver.ProxyServerConfiguration;
@@ -28,12 +20,22 @@ public class HaGatewayProviderModule extends AppModule<HaGatewayConfiguration, E
   private final ResourceGroupsManager resourceGroupsManager;
   private final GatewayBackendManager gatewayBackendManager;
   private final QueryHistoryManager queryHistoryManager;
+
+  private final TapdbCountRuleAggregateManager countRuleAggregateManager;
+
+  private final ClusterAnalyseRoutingManager clusterAnalyseRoutingManager;
+
+  private final TapdbQueryFailureInfoManager failureInfoManager;
+
   private final RoutingManager routingManager;
   private final JdbcConnectionManager connectionManager;
 
   public HaGatewayProviderModule(HaGatewayConfiguration configuration, Environment environment) {
     super(configuration, environment);
-    connectionManager = new JdbcConnectionManager(configuration.getDataStore());
+    connectionManager = new JdbcConnectionManager(configuration.getDataStore(), configuration.getClusterDispatchDataStore());
+    countRuleAggregateManager = new HaTapdbCountRuleAggregateManager(connectionManager);
+    clusterAnalyseRoutingManager = new HaClusterAnalyseRoutingManager(connectionManager);
+    failureInfoManager = new HaTapdbQueryFailureInfoManager(connectionManager);
     resourceGroupsManager = new HaResourceGroupsManager(connectionManager);
     gatewayBackendManager = new HaGatewayManager(connectionManager);
     queryHistoryManager = new HaQueryHistoryManager(connectionManager);
@@ -58,6 +60,9 @@ public class HaGatewayProviderModule extends AppModule<HaGatewayConfiguration, E
 
     return new QueryIdCachingProxyHandler(
         getQueryHistoryManager(),
+        getTapdbCountRuleAggregateManager(),
+        getClusterAnalyseRoutingManager(),
+        getFailureInfoManager(),
         getRoutingManager(),
         routingGroupSelector,
         getApplicationPort(),
@@ -103,6 +108,24 @@ public class HaGatewayProviderModule extends AppModule<HaGatewayConfiguration, E
   @Singleton
   public QueryHistoryManager getQueryHistoryManager() {
     return this.queryHistoryManager;
+  }
+
+  @Provides
+  @Singleton
+  public TapdbCountRuleAggregateManager getTapdbCountRuleAggregateManager() {
+    return this.countRuleAggregateManager;
+  }
+
+  @Provides
+  @Singleton
+  public ClusterAnalyseRoutingManager getClusterAnalyseRoutingManager() {
+    return this.clusterAnalyseRoutingManager;
+  }
+
+  @Provides
+  @Singleton
+  public TapdbQueryFailureInfoManager getFailureInfoManager() {
+    return this.failureInfoManager;
   }
 
   @Provides

@@ -1,6 +1,7 @@
 package com.lyft.data.gateway.ha.router;
 
 import com.lyft.data.gateway.ha.HaGatewayTestUtils;
+import com.lyft.data.gateway.ha.config.ClusterDispatchDataStoreConfiguration;
 import com.lyft.data.gateway.ha.config.DataStoreConfiguration;
 import com.lyft.data.gateway.ha.persistence.JdbcConnectionManager;
 
@@ -24,7 +25,8 @@ public class TestQueryHistoryManager {
         new HaGatewayTestUtils.TestConfig("", tempH2DbDir.getAbsolutePath()));
     String jdbcUrl = "jdbc:h2:" + tempH2DbDir.getAbsolutePath();
     DataStoreConfiguration db = new DataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
-    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db);
+    ClusterDispatchDataStoreConfiguration db2 = new ClusterDispatchDataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
+    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db, db2);
     queryHistoryManager = new HaQueryHistoryManager(connectionManager) {};
   }
 

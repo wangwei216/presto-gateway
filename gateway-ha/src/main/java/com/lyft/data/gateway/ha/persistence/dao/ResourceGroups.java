@@ -6,17 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.javalite.activejdbc.Model;
-import org.javalite.activejdbc.annotations.BelongsTo;
-import org.javalite.activejdbc.annotations.Cached;
-import org.javalite.activejdbc.annotations.HasMany;
-import org.javalite.activejdbc.annotations.IdName;
-import org.javalite.activejdbc.annotations.Table;
+import org.javalite.activejdbc.annotations.*;
 
 @BelongsTo(parent = ResourceGroups.class, foreignKeyName = "parent")
 @HasMany(child = ResourceGroups.class, foreignKeyName = "parent")
 @IdName("resource_group_id")
 @Table("resource_groups") // located in gateway-ha-persistence.sql
 @Cached
+@DbName("default")
 public class ResourceGroups extends Model {
   private static final String resourceGroupId = "resource_group_id";
   private static final String name = "name";

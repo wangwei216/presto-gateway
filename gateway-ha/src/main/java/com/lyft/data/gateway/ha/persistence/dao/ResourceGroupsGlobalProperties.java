@@ -7,12 +7,14 @@ import java.util.List;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Cached;
+import org.javalite.activejdbc.annotations.DbName;
 import org.javalite.activejdbc.annotations.IdName;
 import org.javalite.activejdbc.annotations.Table;
 
 @IdName("name")
 @Table("resource_groups_global_properties") // located in gateway-ha-persistence.sql
 @Cached
+@DbName("default")
 public class ResourceGroupsGlobalProperties extends Model {
   private static final String name = "name";
   private static final String value = "value";

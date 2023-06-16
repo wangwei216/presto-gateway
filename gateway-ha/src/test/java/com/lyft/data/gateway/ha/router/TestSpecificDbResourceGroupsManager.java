@@ -3,6 +3,7 @@ package com.lyft.data.gateway.ha.router;
 import static com.lyft.data.gateway.ha.router.ResourceGroupsManager.ResourceGroupsDetail;
 
 import com.lyft.data.gateway.ha.HaGatewayTestUtils;
+import com.lyft.data.gateway.ha.config.ClusterDispatchDataStoreConfiguration;
 import com.lyft.data.gateway.ha.config.DataStoreConfiguration;
 import com.lyft.data.gateway.ha.persistence.JdbcConnectionManager;
 import java.io.File;
@@ -28,9 +29,9 @@ public class TestSpecificDbResourceGroupsManager extends TestResourceGroupsManag
     String jdbcUrl = "jdbc:h2:" + tempH2DbDir.getAbsolutePath();
     HaGatewayTestUtils.seedRequiredData(
             new HaGatewayTestUtils.TestConfig("", tempH2DbDir.getAbsolutePath()));
-    DataStoreConfiguration db = new DataStoreConfiguration(jdbcUrl, "sa",
-            "sa", "org.h2.Driver");
-    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db);
+    DataStoreConfiguration db = new DataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
+    ClusterDispatchDataStoreConfiguration db2 = new ClusterDispatchDataStoreConfiguration(jdbcUrl, "sa", "sa", "org.h2.Driver");
+    JdbcConnectionManager connectionManager = new JdbcConnectionManager(db, db2);
     super.resourceGroupManager = new HaResourceGroupsManager(connectionManager);
   }
 
